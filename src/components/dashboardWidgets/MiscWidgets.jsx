@@ -82,35 +82,45 @@ export const NotificationWidget = () => {
   );
 };
 
-
 const links = [
-//   {
-//     label: "Add Employee",
-//     icon: UserPlus
-//   },
+  {
+    label: "Add Employee",
+    icon: UserPlus,
+    roles: ["hr"]
+  },
   {
     label: "Approve Users",
-    icon: ClipboardList
+    icon: ClipboardList,
+    roles: ["hr"]
+  },
+  {
+    label: "Approve Leaves",
+    icon: ClipboardList,
+    roles: ["manager"]
   },
   {
     label: "Attendance",
-    icon: CalendarCheck
+    icon: CalendarCheck,
+    roles: ["hr", "manager"]
   },
-//   {
-//     label: "Payroll",
-//     icon: Landmark
-//   },
-//   {
-//     label: "Reports",
-//     icon: FileText
-//   },
-//   {
-//     label: "Directory",
-//     icon: Users
-//   }
+  {
+    label: "Leave Status",
+    icon: CalendarCheck,
+    roles: ["employee"]
+  },
+  {
+    label: "Policies",
+    icon: FileText,
+    roles: ["employee"]
+  }
 ];
 
-export const QuickLinksWidget = () => {
+export const QuickLinksWidget = ({ role }) => {
+
+  const filteredLinks = links.filter(
+    (link) => !link.roles || link.roles.includes(role)
+  );
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
 
@@ -122,13 +132,25 @@ export const QuickLinksWidget = () => {
       {/* Grid */}
       <div className="grid grid-cols-2 gap-3">
 
-        {links.map((link) => {
+        {filteredLinks.map((link) => {
           const Icon = link.icon;
 
           return (
             <button
               key={link.label}
-              className="cursor-pointer flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-gray-100 hover:bg-gray-50 hover:shadow-sm transition"
+              className="
+              cursor-pointer
+              flex flex-col
+              items-center
+              justify-center
+              gap-2
+              p-3
+              rounded-lg
+              border border-gray-100
+              hover:bg-gray-50
+              hover:shadow-sm
+              transition
+              "
             >
               <Icon
                 size={18}

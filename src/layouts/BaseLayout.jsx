@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import Sidebar from "./SideBar";
 import Header from "./Header";
 
-const BaseLayout = ({ children }) => {
+const BaseLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -14,8 +15,8 @@ const BaseLayout = ({ children }) => {
 
         <Header />
 
-        <main className="flex-1 px-6 py-2 overflow-y-scroll ">
-          {children}
+        <main className="flex-1 px-6 py-2 overflow-y-scroll">
+          <Outlet />
         </main>
 
       </div>

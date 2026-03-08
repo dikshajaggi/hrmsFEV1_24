@@ -16,13 +16,6 @@ export const sidebarConfig = [
   },
 
   {
-    label: "Leaves",
-    icon: CalendarDays,
-    path: "/leaves",
-    roles: ["ADMIN", "MANAGER", "EMPLOYEE"]
-  },
-
-  {
     label: "Attendance",
     icon: Clock,
     path: "/attendance",
