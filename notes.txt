@@ -1,0 +1,25 @@
+User registers
+↓
+HR sees in Pending Users
+↓
+HR approves
+↓
+Backend generates FIRST_LOGIN token
+↓
+Email sent
+↓
+User clicks email link
+
+/first-login?token=abc123
+
+↓
+Frontend extracts token
+↓
+User sets password
+↓
+completeFirstLogin(token, password)
+
+↓
+Password saved
+↓
+User logs in normally

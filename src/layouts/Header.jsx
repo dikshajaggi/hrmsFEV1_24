@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Menu, Sun, Moon, PanelRightClose, PanelRightOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../apis";
+import { MainContext } from "../context/MainContext";
 // import { ThemeContext } from "../../context/ThemeContext";
 
 const Header = () => {
 //   const { theme, toggleTheme } = useContext(ThemeContext);
-
-const theme = "light"
+  const {userDetails} = useContext(MainContext)
+  const theme = "light"
   const [time, setTime] = useState(new Date());
   const [openProfile, setOpenProfile] = useState(false);
   const dropdownRef = useRef();
@@ -15,6 +17,12 @@ const theme = "light"
 
   const username = "Diksha";
   const designation = "HR Manager";
+
+  const logout = async () => {
+    await logoutUser();
+    localStorage.removeItem("accessToken");
+    navigate("/login");
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -52,15 +60,6 @@ const theme = "light"
     day: "numeric",
   });
   
-  const handleLogout = () => {
-    console.log("logout");
-
-    // clear token etc
-    localStorage.removeItem("token");
-
-    navigate("/login");
-  };
-
 
   return (
     <header className="h-20 px-6 flex items-center justify-between py-4">
@@ -72,8 +71,8 @@ const theme = "light"
             <span className="font-semibold text-gray-600 mr-2">{formattedDate} </span> <span>  {formattedTime} </span>
           </p>
 
-          <p className="text-2xl font-semibold text-text-primary mt-2">
-            {getGreeting()}, {username}!
+          <p className="text-2xl font-semibold text-text-primary mt-2 capitalize">
+            {getGreeting()}, {userDetails.fullName}!
           </p>
         </div>
       </div>
@@ -96,17 +95,17 @@ const theme = "light"
             onClick={() => setOpenProfile(!openProfile)}
             className="flex items-center gap-3 cursor-pointer"
           >
-            <div className="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
-              {username[0]}
+            <div className="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium capitalize">
+              {userDetails ? userDetails.username[0] :  "S"}
             </div>
 
             <div className="hidden md:block text-left">
-              <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                {username}
+              <p className="text-sm font-medium text-gray-800 dark:text-gray-200 capitalize">
+                {userDetails ? userDetails.fullName: "Sample User"}
               </p>
 
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                {designation}
+                {userDetails ? userDetails.designation: "Sample Desg."}
               </p>
             </div>
           </button>
@@ -126,7 +125,7 @@ const theme = "light"
               </button>
 
               <button
-                onClick={handleLogout}
+                onClick={logout}
                 className="w-full text-left px-4 py-2 text-sm text-red-600
                 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
               >

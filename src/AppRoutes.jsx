@@ -20,7 +20,7 @@ const AppRoutes = () => {
         {/* Public routes (no layout) */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/first-login" element={<FirstLogin />} />
+        <Route path="/set-password" element={<FirstLogin />} />
         {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
 
         {/* App routes (with layout) */}

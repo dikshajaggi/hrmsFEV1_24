@@ -1,0 +1,32 @@
+import api from "./axios";
+
+
+//------------------------------AUTH APIS------------------------------------------------------
+export const registerUser = (data) => {
+  return api.post("/auth/register", data);
+};
+
+export const loginUser = (data) => {
+  return api.post("/auth/login", data);
+};
+
+export const completeFirstLogin = (data) => {
+  return api.post("/auth/activate-account", data);
+};
+
+export const logoutUser = () => {
+  return api.post("/auth/logout");
+};
+
+//------------------------------HR APIS------------------------------------------------------
+export const fetchPendingUsers = () => {
+  return api.get("/hr/pending-users");
+};
+
+export const approveUser = (data) => {
+  return api.post("/hr/approve-user", data);
+};
+
+export const rejectUser = (data) => {
+  return api.post("/hr/reject-user", data);
+};

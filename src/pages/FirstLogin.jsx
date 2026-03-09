@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import crimsonenergy from "../assets/crimsonenergy.svg"
+import { useSearchParams } from "react-router-dom";
+import { completeFirstLogin } from "../apis";
 
 export default function FirstLogin() {
-
-  const navigate = useNavigate();
+const [searchParams] = useSearchParams();
+const token = searchParams.get("token");
+ const navigate = useNavigate();
 
   const [form, setForm] = useState({
     password: "",
@@ -14,6 +17,12 @@ export default function FirstLogin() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+
+  if (!token) {
+    return <div className="p-6 text-center">Invalid activation link.</div>;
+  }
+
+ 
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -23,31 +32,16 @@ export default function FirstLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setError("");
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-
     try {
-
-      const userId = localStorage.getItem("firstLoginUserId");
-
-      const res = await fetch(`/api/auth/complete-first-login/${userId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          newPassword: form.password
-        })
+      await completeFirstLogin({
+        token,
+        newPassword: form.password
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to set password");
-      }
 
       setSuccess("Password set successfully. Please login.");
 
@@ -56,7 +50,11 @@ export default function FirstLogin() {
       }, 2000);
 
     } catch (err) {
-      setError(err.message);
+
+      setError(
+        err.response?.data?.message || "Failed to set password"
+      );
+
     }
   };
 
@@ -64,7 +62,7 @@ export default function FirstLogin() {
     <div className="min-h-screen flex bg-gray-50">
 
       {/* LEFT PANEL */}
-      <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-[#C8102E] to-[#a60e25] text-white flex-col justify-center px-16">
+      <div className="hidden lg:flex w-1/2 bg-linear-to-br from-brand to-[#a60e25] text-white flex-col justify-center px-16">
 
          <div className="absolute top-6 left-10 flex items-center gap-2">
             <img src={crimsonenergy} className="h-14 drop-shadow-[0_0_10px_rgba(255,255,255,0.6)] mr-2" />
@@ -126,7 +124,7 @@ export default function FirstLogin() {
                 value={form.password}
                 onChange={handleChange}
                 required
-                className="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]"
+                className="mt-1 w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
               />
             </div>
 

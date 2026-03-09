@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import crimsonenergy from "../assets/crimsonenergy.svg"
+import { loginUser } from "../apis";
+import { MainContext } from "../context/MainContext";
 
 export default function Login() {
 
   const navigate = useNavigate();
+  const {setUserDetails} = useContext(MainContext)
 
   const [form, setForm] = useState({
     username: "",
@@ -20,42 +23,18 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
+const handleSubmit = async (e) => {
 
-  setError("");
+  e.preventDefault();
 
   try {
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(form)
-    });
-
-    const data = await res.json();
-
-    // First login flow
-    if (data.requiresFirstLogin) {
-      localStorage.setItem("firstLoginUserId", data.userId);
-      navigate("/first-login");
-      return;
-    }
-
-    // Normal errors
-    if (!res.ok) {
-      throw new Error(data.message || "Login failed");
-    }
-
-    // Successful login
-    localStorage.setItem("accessToken", data.accessToken);
-
+    const res = await loginUser(form);
+    localStorage.setItem("accessToken", res.data.accessToken);
+    setUserDetails(res.data.user)
     navigate("/");
-
   } catch (err) {
-    setError(err.message);
+    setError(err.response?.data?.message || "Login failed");
   }
 };
 

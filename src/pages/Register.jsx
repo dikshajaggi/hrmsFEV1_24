@@ -1,6 +1,7 @@
 import { useState } from "react";
 import crimsonenergy from "../assets/crimsonenergy.svg"
 import { Link } from "react-router-dom";
+import { registerUser } from "../apis";
 
 export default function Register() {
 
@@ -17,10 +18,22 @@ export default function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(form);
-  };
+ const handleSubmit = async (e) => {
+
+  e.preventDefault();
+
+  try {
+
+    await registerUser(form);
+
+    alert("Registration submitted. Wait for HR approval.");
+
+  } catch (err) {
+
+    alert(err.response?.data?.message);
+
+  }
+};
 
   return (
     <div className="min-h-screen flex bg-gray-50">

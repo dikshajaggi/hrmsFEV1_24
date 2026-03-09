@@ -1,31 +1,34 @@
+import { useContext } from "react";
 import { RenderWidgets } from "../utils/RenderWidgets";
+import { MainContext } from "../context/MainContext";
 
 const Dashboard = () => {
-const role = "hr"
-// const [runTour, setRunTour] = useState(true);
+  const {userDetails} = useContext(MainContext)
+  const role = userDetails.roles[0].toLowerCase()
+  // const [runTour, setRunTour] = useState(true);
 
-//   const steps = [
-//     {
-//       target: ".stats-section",
-//       content: "Here you can see today's attendance summary."
-//     },
-//     {
-//       target: ".charts-section",
-//       content: "These charts show leave trends for better HR insights."
-//     },
-//     {
-//       target: ".insights-section",
-//       content: "These widgets provide department analytics and HR activity."
-//     },
-//     {
-//       target: ".notifications-widget",
-//       content: "Notifications keep HR updated about important events."
-//     },
-//     {
-//       target: ".quicklinks-widget",
-//       content: "Quick actions allow you to perform frequent tasks quickly."
-//     }
-//   ];
+  //   const steps = [
+  //     {
+  //       target: ".stats-section",
+  //       content: "Here you can see today's attendance summary."
+  //     },
+  //     {
+  //       target: ".charts-section",
+  //       content: "These charts show leave trends for better HR insights."
+  //     },
+  //     {
+  //       target: ".insights-section",
+  //       content: "These widgets provide department analytics and HR activity."
+  //     },
+  //     {
+  //       target: ".notifications-widget",
+  //       content: "Notifications keep HR updated about important events."
+  //     },
+  //     {
+  //       target: ".quicklinks-widget",
+  //       content: "Quick actions allow you to perform frequent tasks quickly."
+  //     }
+  //   ];
 
   return (
     <>
