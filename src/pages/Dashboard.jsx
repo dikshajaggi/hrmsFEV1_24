@@ -4,7 +4,7 @@ import { MainContext } from "../context/MainContext";
 
 const Dashboard = () => {
   const {userDetails} = useContext(MainContext)
-  const role = userDetails.roles[0].toLowerCase()
+  const role = userDetails ? userDetails.roles[0].toLowerCase() : "hr"
   // const [runTour, setRunTour] = useState(true);
 
   //   const steps = [

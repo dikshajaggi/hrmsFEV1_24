@@ -1,28 +1,18 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Menu, Sun, Moon, PanelRightClose, PanelRightOpen } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { logoutUser } from "../apis";
 import { MainContext } from "../context/MainContext";
 // import { ThemeContext } from "../../context/ThemeContext";
 
 const Header = () => {
 //   const { theme, toggleTheme } = useContext(ThemeContext);
-  const {userDetails} = useContext(MainContext)
+  const {userDetails, logout} = useContext(MainContext)
   const theme = "light"
   const [time, setTime] = useState(new Date());
   const [openProfile, setOpenProfile] = useState(false);
   const dropdownRef = useRef();
 
   const navigate = useNavigate();
-
-  const username = "Diksha";
-  const designation = "HR Manager";
-
-  const logout = async () => {
-    await logoutUser();
-    localStorage.removeItem("accessToken");
-    navigate("/login");
-  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -72,7 +62,7 @@ const Header = () => {
           </p>
 
           <p className="text-2xl font-semibold text-text-primary mt-2 capitalize">
-            {getGreeting()}, {userDetails.fullName}!
+            {getGreeting()}, {userDetails? userDetails.fullName: "Sample User"}!
           </p>
         </div>
       </div>

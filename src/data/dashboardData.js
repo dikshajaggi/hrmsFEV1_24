@@ -1,4 +1,4 @@
-import { Users, UserCheck, UserMinus, Stethoscope } from "lucide-react";
+import { Users, UserCheck, UserMinus, Stethoscope, UserPlus, FileText, CalendarCheck, ClipboardList } from "lucide-react";
 
 
 export const todayStats = [
@@ -23,3 +23,43 @@ export const todayStats = [
         label:"Sick Leave"
     }
 ]
+
+
+export const links = [
+  {
+    label: "Add Employee",
+    icon: UserPlus,
+    roles: ["hr"],
+    link: ""
+  },
+  {
+    label: "Approve Users",
+    icon: ClipboardList,
+    roles: ["hr"],
+    link: ""
+  },
+  {
+    label: "Approve Leaves",
+    icon: ClipboardList,
+    roles: ["manager"],
+    link: ""
+  },
+  {
+    label: "Attendance",
+    icon: CalendarCheck,
+    roles: ["hr", "manager"],
+    link: ""
+  },
+  {
+    label: "Leave Status",
+    icon: CalendarCheck,
+    roles: ["employee"],
+    link: "/leave-status"
+  },
+  {
+    label: "Policies",
+    icon: FileText,
+    roles: ["employee"],
+    link: "/policies"
+  }
+];

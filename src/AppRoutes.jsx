@@ -1,33 +1,41 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import Dashboard from "./pages/Dashboard";
 import Employees from "./pages/Employees";
+import LeaveStatus from "./pages/LeaveStatus";
+import Policies from "./pages/Policies";
 import Attendance from "./pages/Attendance";
 import Register from "./pages/Register";
-
-import BaseLayout from "./layouts/BaseLayout";
 import Login from "./pages/Login";
 import FirstLogin from "./pages/FirstLogin";
-import ForgotPassword from "./pages/ForgotPassword";
+
+import BaseLayout from "./layouts/BaseLayout";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 const AppRoutes = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Routes>
 
-        {/* Public routes (no layout) */}
+        {/* Default route */}
+        <Route path="/" element={<Navigate to="/login" />} />
+
+        {/* Public routes */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/set-password" element={<FirstLogin />} />
-        {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
 
-        {/* App routes (with layout) */}
-        <Route element={<BaseLayout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/employees" element={<Employees />} />
-          <Route path="/attendance" element={<Attendance />} />
+        {/* Protected routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<BaseLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/employees" element={<Employees />} />
+            <Route path="/attendance" element={<Attendance />} />
+            <Route path="/leave-status" element={<LeaveStatus />} />
+            <Route path="/policies" element={<Policies />} />
+          </Route>
         </Route>
 
       </Routes>

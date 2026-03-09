@@ -4,35 +4,51 @@ import {
   Clock,
   Users,
   UserCheck,
-  Home
+  Home,
+  Folders
 } from "lucide-react";
 
 export const sidebarConfig = [
   {
     label: "Home",
     icon: Home,
-    path: "/",
-    roles: ["ADMIN", "MANAGER", "EMPLOYEE"]
+    path: "/dashboard",
+    roles: ["hr", "manager", "employee"]
   },
 
   {
     label: "Attendance",
     icon: Clock,
     path: "/attendance",
-    roles: ["ADMIN", "MANAGER"]
+    roles: ["hr", "manager"]
   },
 
   {
     label: "Employees",
     icon: Users,
     path: "/employees",
-    roles: ["ADMIN"]
+    roles: ["hr"]
   },
 
   {
     label: "Approvals",
     icon: UserCheck,
     path: "/approvals",
-    roles: ["MANAGER"]
-  }
+    roles: ["manager"]
+  },
+
+  {
+    label: "Leave Status",
+    icon: CalendarDays,
+    path: "/leave-status",
+    roles: ["hr", "manager", "employee"]
+  },
+
+  {
+    label: "Policies",
+    icon: Folders,
+    path: "/policies",
+    roles: ["hr", "manager", "employee"]
+  },
+  
 ];

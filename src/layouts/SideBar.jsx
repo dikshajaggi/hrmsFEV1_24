@@ -7,9 +7,12 @@ import {
 import crimsonenergy from "../assets/crimsonenergy.svg";
 import Tooltip from "../components/ui/Tooltip";
 import { sidebarConfig } from "../configs/sidebarConfig";
+import { useContext } from "react";
+import { MainContext } from "../context/MainContext";
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
-
+  const {userDetails} = useContext(MainContext)
+  const role = userDetails.roles[0].toLowerCase()
   return (
     <aside
       className={`
@@ -33,7 +36,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       {/* Logo */}
       <div className="flex flex-col items-center gap-8">
 
-        <Link to="/"><img src={crimsonenergy} className="h-14 w-14" /></Link>
+        <Link to="/dashboard"><img src={crimsonenergy} className="h-14 w-14" /></Link>
 
         <button
           onClick={() => setCollapsed(!collapsed)}
@@ -59,7 +62,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
 
         {/* Navigation */}
         <nav className="flex flex-col gap-6 mt-10 px-3">
-          {sidebarConfig.map((item) => {
+          {sidebarConfig.filter(item => item.roles.includes(role)).map((item) => {
             const Icon = item.icon;
 
             return (

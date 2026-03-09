@@ -1,4 +1,6 @@
-import { Bell, UserPlus, CheckCircle2, FileText, CalendarCheck, ClipboardList } from "lucide-react";
+import { Bell, UserPlus, CheckCircle2, FileText, CalendarCheck } from "lucide-react";
+import { links } from "../../data/dashboardData";
+import { Link } from "react-router-dom";
 
 const notifications = [
   {
@@ -82,38 +84,6 @@ export const NotificationWidget = () => {
   );
 };
 
-const links = [
-  {
-    label: "Add Employee",
-    icon: UserPlus,
-    roles: ["hr"]
-  },
-  {
-    label: "Approve Users",
-    icon: ClipboardList,
-    roles: ["hr"]
-  },
-  {
-    label: "Approve Leaves",
-    icon: ClipboardList,
-    roles: ["manager"]
-  },
-  {
-    label: "Attendance",
-    icon: CalendarCheck,
-    roles: ["hr", "manager"]
-  },
-  {
-    label: "Leave Status",
-    icon: CalendarCheck,
-    roles: ["employee"]
-  },
-  {
-    label: "Policies",
-    icon: FileText,
-    roles: ["employee"]
-  }
-];
 
 export const QuickLinksWidget = ({ role }) => {
 
@@ -136,6 +106,7 @@ export const QuickLinksWidget = ({ role }) => {
           const Icon = link.icon;
 
           return (
+            <Link to= {link.link}>
             <button
               key={link.label}
               className="
@@ -161,6 +132,7 @@ export const QuickLinksWidget = ({ role }) => {
                 {link.label}
               </span>
             </button>
+            </Link>
           );
         })}
 
