@@ -34,7 +34,7 @@ export const sidebarConfig = [
     label: "Approvals",
     icon: UserCheck,
     path: "/approvals",
-    roles: ["manager"]
+    roles: ["hr", "manager"]
   },
 
   {

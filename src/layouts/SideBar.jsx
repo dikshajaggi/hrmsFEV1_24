@@ -74,7 +74,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
                     flex
                     ${collapsed ? "justify-center" : "gap-3 px-3"}
                     items-center
-                    py-2.5
+                    py-1.5
                     rounded-lg
                     transition-all
                     duration-200

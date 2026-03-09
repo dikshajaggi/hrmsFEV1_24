@@ -30,3 +30,21 @@ export const approveUser = (data) => {
 export const rejectUser = (data) => {
   return api.post("/hr/reject-user", data);
 };
+
+//--------------------------MANAGER APIS--------------------------------------------------
+
+
+export const fetchManagerData = () => {
+    return api.get("/org/manager-data");
+}
+
+//--------------------------ORGANISATION APIS--------------------------------------------------
+
+
+export const fetchDesignationData = () => {
+    return api.get("/org/designation-data");
+}
+
+export const fetchTeamData = () => {
+    return api.get("/org/team-data");
+}

@@ -11,7 +11,7 @@ export default function Dropdown({ label, options, onChange }) {
 
   useEffect(() => {
     const handleClick = (e) => {
-      if (!ref.current.contains(e.target)) setOpen(false);
+      if (!ref.current?.contains(e.target)) setOpen(false);
     };
 
     document.addEventListener("click", handleClick);
@@ -19,62 +19,68 @@ export default function Dropdown({ label, options, onChange }) {
   }, []);
 
   const selectOption = (option) => {
-    setValue(option);
+    setValue(option.label);
     onChange(option);
     setOpen(false);
   };
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="relative w-full">
 
       <button
         onClick={() => setOpen(!open)}
         className="
-        cursor-pointer
-        flex items-center gap-2
+        w-full
+        flex items-center justify-between
         px-3 py-2
         rounded-lg
         text-sm
+        border border-gray-200
         bg-white
         hover:bg-gray-50
         transition
         "
       >
-        {value}
-        <ChevronDown size={14} />
+        <span className="text-gray-700">{value}</span>
+        <ChevronDown size={14} className="text-gray-500" />
       </button>
 
       {open && (
-        <div className="
-        absolute
-        right-0
-        mt-2
-        w-44
-        bg-white
-        rounded-lg
-        shadow-lg
-        z-50
-        overflow-hidden
-        ">
+        <div
+          className="
+          absolute
+          left-0
+          mt-2
+          w-full
+          bg-white
+          rounded-lg
+          shadow-lg
+          border border-gray-100
+          z-50
+          overflow-hidden
+          "
+        >
 
           {options.map((option) => (
             <button
-              key={option}
+              key={option.value}
               onClick={() => selectOption(option)}
               className="
               w-full
               text-left
               px-3 py-2
               text-sm
-              hover:bg-gray-100
+              hover:bg-gray-50
+              transition
               "
             >
-              {option}
+              {option.label}
             </button>
           ))}
 
         </div>
       )}
+
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Dashboard from "./pages/Dashboard";
 import Employees from "./pages/Employees";
 import LeaveStatus from "./pages/LeaveStatus";
+import Approvals from "./pages/Approvals";
 import Policies from "./pages/Policies";
 import Attendance from "./pages/Attendance";
 import Register from "./pages/Register";
@@ -34,6 +35,7 @@ const AppRoutes = () => {
             <Route path="/employees" element={<Employees />} />
             <Route path="/attendance" element={<Attendance />} />
             <Route path="/leave-status" element={<LeaveStatus />} />
+            <Route path="/approvals" element={<Approvals />} />
             <Route path="/policies" element={<Policies />} />
           </Route>
         </Route>
