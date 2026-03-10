@@ -13,42 +13,44 @@ export default function Approvals() {
   const [users, setUsers] = useState([
   {
     id: 1,
-    fullName: "Ankit Sharma",
-    email: "ankit.sharma@company.com",
+    fullName: "Shivani",
+    email: "shivani@company.com",
     createdAt: "2026-03-07T10:30:00Z",
   },
   {
     id: 2,
-    fullName: "Priya Mehta",
-    email: "priya.mehta@company.com",
+    fullName: "Ronaldo",
+    email: "ronaldo@company.com",
     createdAt: "2026-03-08T09:12:00Z",
   },
   {
     id: 3,
-    fullName: "Rahul Verma",
-    email: "rahul.verma@company.com",
+    fullName: "Thomas",
+    email: "thomas@company.com",
     createdAt: "2026-03-08T14:20:00Z",
   },
 ]);
 
 const [teams, setTeams] = useState([
-  { id: 1, name: "Engineering" },
-  { id: 2, name: "Product" },
-  { id: 3, name: "Design" },
+  { id: 1, name: "AI" },
+  { id: 2, name: "Finance" },
+  { id: 3, name: "Designing" },
   { id: 4, name: "HR" },
 ]);
 
 const [designations, setDesignations] = useState([
-  { id: 1, title: "Software Engineer" },
-  { id: 2, title: "Senior Software Engineer" },
-  { id: 3, title: "Engineering Manager" },
+  { id: 1, title: "Software Developer" },
+  { id: 2, title: "Senior Software Developer" },
+  { id: 3, title: "Assistant Manager" },
   { id: 4, title: "HR Executive" },
+  { id: 5, title: "Accountant" },
+  { id: 6, title: "Design Engineer" },
 ]);
 
 const [managers, setManagers] = useState([
-  { id: 1, fullName: "Amit Gupta" },
-  { id: 2, fullName: "Neha Kapoor" },
-  { id: 3, fullName: "Siddharth Jain" },
+  { id: 1, fullName: "Niladri Bose" },
+  { id: 2, fullName: "Nitin Madhavan" },
+  { id: 3, fullName: "Pushpdeep Singh" },
 ]);
 
   const [selectedUser, setSelectedUser] = useState(null);

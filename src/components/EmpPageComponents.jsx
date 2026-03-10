@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -7,22 +7,44 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 
-import { MoreHorizontal } from "lucide-react";
-import { useState } from "react";
+import {
+  MoreHorizontal,
+  ArrowUp,
+  ArrowDown,
+  ArrowUpDown,
+} from "lucide-react";
+import { getEmployees } from "../apis";
 
-const data = [
-  {
-    id: 1,
-    name: "Aman Gupta",
-    email: "aman@company.com",
-    team: "Engineering",
-    role: "Frontend Developer",
-    status: "Active",
-  },
-];
 
 export const EmployeeTable = () => {
-  const [sorting, setSorting] = React.useState([]);
+  const [data, setData] = useState([]);
+  const [sorting, setSorting] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const res = await getEmployees();
+
+      const formatted = res.data.map((emp) => ({
+        id: emp.id,
+        name: emp.user.fullName,
+        email: emp.user.email,
+        team: emp.team?.name,
+        role: emp.designation?.name,
+        status: emp.status,
+      }));
+
+      setData(formatted);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const table = useReactTable({
     data,
@@ -34,16 +56,18 @@ export const EmployeeTable = () => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+  if (loading) {
+    return <TableSkeleton />;
+  }
+
   return (
     <div className="flex flex-col h-full bg-white rounded-xl border border-gray-200 shadow-sm">
 
       {/* TABLE */}
       <div className="flex-1 overflow-auto">
-
         <table className="w-full text-sm">
 
           <thead className="bg-gray-50 sticky top-0 z-10">
-
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
 
@@ -53,48 +77,54 @@ export const EmployeeTable = () => {
                     className="text-left px-5 py-3 font-medium text-gray-600 cursor-pointer select-none"
                     onClick={header.column.getToggleSortingHandler()}
                   >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
+                    <div className="flex items-center gap-1">
 
-                    {{
-                      asc: " 🔼",
-                      desc: " 🔽",
-                    }[header.column.getIsSorted()] ?? null}
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
 
+                      {header.column.getIsSorted() === "asc" && (
+                        <ArrowUp size={14} />
+                      )}
+
+                      {header.column.getIsSorted() === "desc" && (
+                        <ArrowDown size={14} />
+                      )}
+
+                      {!header.column.getIsSorted() && (
+                        <ArrowUpDown size={14} className="opacity-40" />
+                      )}
+
+                    </div>
                   </th>
                 ))}
 
               </tr>
             ))}
-
           </thead>
 
           <tbody>
-
             {table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
                 className="border-t border-gray-100 hover:bg-gray-50 transition"
               >
+
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="px-5 py-4">
-
                     {flexRender(
                       cell.column.columnDef.cell,
                       cell.getContext()
                     )}
-
                   </td>
                 ))}
+
               </tr>
             ))}
-
           </tbody>
 
         </table>
-
       </div>
 
       {/* PAGINATION */}
@@ -129,8 +159,7 @@ export const EmployeeTable = () => {
 
     </div>
   );
-}
-
+};
 
 const columns = [
   {
@@ -163,7 +192,7 @@ const columns = [
 
   {
     accessorKey: "team",
-    header: "Team",
+    header: "Department",
   },
 
   {
@@ -175,11 +204,17 @@ const columns = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-
       const status = row.original.status;
 
+      const color =
+        status === "ACTIVE"
+          ? "bg-green-100 text-green-700"
+          : "bg-gray-100 text-gray-600";
+
       return (
-        <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
+        <span
+          className={`px-2 py-1 text-xs font-medium rounded-full ${color}`}
+        >
           {status}
         </span>
       );
@@ -193,10 +228,7 @@ const columns = [
   // },
 ];
 
-
-
 const EmployeeActions = () => {
-
   const [open, setOpen] = useState(false);
 
   return (
@@ -229,4 +261,27 @@ const EmployeeActions = () => {
 
     </div>
   );
-}
+};
+
+const TableSkeleton = () => {
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="animate-pulse space-y-4">
+
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="flex items-center gap-4">
+
+            <div className="w-9 h-9 bg-gray-200 rounded-full"></div>
+
+            <div className="flex-1 space-y-2">
+              <div className="h-3 w-40 bg-gray-200 rounded"></div>
+              <div className="h-2 w-24 bg-gray-200 rounded"></div>
+            </div>
+
+          </div>
+        ))}
+
+      </div>
+    </div>
+  );
+};

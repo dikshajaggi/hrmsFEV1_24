@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { logoutUser } from "../apis";
+import { getDashboard, logoutUser } from "../apis";
 import { useNavigate } from "react-router-dom";
 
 export const MainContext = createContext();
@@ -13,6 +13,25 @@ export const MainContextProvider = ({ children }) => {
     return storedUser ? JSON.parse(storedUser) : null;
   });
   const isAuthenticated = !!userDetails;
+
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loadingDashboard, setLoadingDashboard] = useState(false);
+
+  const loadDashboard = async () => {
+    try {
+      setLoadingDashboard(true);
+
+      const res = await getDashboard();
+
+      setDashboardData(res.data);
+
+    } catch (err) {
+      console.error("Dashboard fetch failed", err);
+    } finally {
+      setLoadingDashboard(false);
+    }
+  };
+
 
   const logout = async () => {
     try {
@@ -37,11 +56,20 @@ export const MainContextProvider = ({ children }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (userDetails) {
+      loadDashboard();
+    }
+  }, [userDetails]);
+
   const mainContextValue = {
     userDetails,
     setUserDetails,
     logout,
-    isAuthenticated
+    isAuthenticated,
+    dashboardData,
+    loadingDashboard,
+    loadDashboard
   };
 
   return (

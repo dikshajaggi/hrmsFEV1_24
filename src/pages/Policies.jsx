@@ -1,10 +1,11 @@
 import React from 'react'
+import UnderConstruction from './UnderConstruction'
 
 const Policies = () => {
   return (
-    <div>
-      
-    </div>
+    <>
+      <UnderConstruction />
+    </>
   )
 }
 

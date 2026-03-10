@@ -1,54 +1,59 @@
 import { Users, UserCheck, UserMinus, Stethoscope, UserPlus, FileText, CalendarCheck, ClipboardList } from "lucide-react";
 
+export const todayStats = (dashboardData) => {
 
-export const todayStats = [
+  if (!dashboardData) return [];
+
+  const data = dashboardData.workforceToday;
+
+  return [
     {
-        icon:Users,
-        value:"124",
-        label:"Total Employees"
+      icon: Users,
+      value: data.totalEmployees,
+      label: "Total Employees"
     },
     {
-        icon:UserCheck,
-        value:"98",
-        label:"Present"
+      icon: UserCheck,
+      value: data.present,
+      label: "Present"
     },
     {
-        icon:UserMinus,
-        value:"12",
-        label:"On Leave"
+      icon: UserMinus,
+      value: data.leaveFull,
+      label: "On Leave"
     },
     {
-        icon:Stethoscope,
-        value:"5",
-        label:"Sick Leave"
+      icon: Stethoscope,
+      value: data.sickFull,
+      label: "Sick Leave"
     }
-]
-
+  ];
+};
 
 export const links = [
   {
     label: "Add Employee",
     icon: UserPlus,
     roles: ["hr"],
-    link: ""
+    link: "/employees"
   },
   {
     label: "Approve Users",
     icon: ClipboardList,
     roles: ["hr"],
-    link: ""
+    link: "/approvals"
   },
   {
     label: "Approve Leaves",
     icon: ClipboardList,
     roles: ["manager"],
-    link: ""
+    link: "/approvals"
   },
   {
     label: "Attendance",
     icon: CalendarCheck,
     roles: ["hr", "manager"],
-    link: ""
+    link: "/attendance"
   },
   {
     label: "Leave Status",

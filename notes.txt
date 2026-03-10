@@ -23,3 +23,29 @@ completeFirstLogin(token, password)
 Password saved
 ↓
 User logs in normally
+
+
+yes do it also these are the details
+
+hr - Mona Savio Pereira - team-hr - desg - dgm hr and finance
+manager - niladri bose - team- ai  - desg-  assistant vice president
+employee - nischal ahuja - team- finance - assistant finance manager
+employee - divya verma - team - finance - desg - employee
+employee - himanshu sharma - team,  designation- assistant design engineer
+employee - diksha jaggi - team - ai, desg- software developer
+employee - uttam rana - team - ai, desg- software developer
+employee - shubham sharma - team - ai, desg- data pipeline engineer
+employee - shubham singh - team - ai, desg- backend engineer
+employee - shridev cherukat - team - ai, desg- software developer
+employee - steve jacob thomas - team ai, desg- ai/ml engineer
+employee - pranay rohilla - team ai, desg- ui/ux designer
+
+every 2nd and 4th saturday will be off
+
+januaray holidays - 26th jan
+march holidays - 4th holi , 26 march - ram navmi,  31- mahavir jayanti, 3 april- good friday
+25th dec - christmas ,  15th aug - independence day, 2nd october - gandhi jayanti
+
+
+Designations - assistant vice president, dgm hr and finance, assistant design engineer, assistant finance manager, employee, software developer,
+ui/ux designer, ai/ml engineer, backend engineer, data pipeline engineer

@@ -6,14 +6,14 @@ const notifications = [
   {
     id: 1,
     title: "3 Leave Requests Pending",
-    description: "Engineering team has pending approvals.",
+    description: "AI team has pending approvals.",
     time: "5 min ago",
     type: "warning"
   },
   {
     id: 2,
     title: "2 Employees on Sick Leave",
-    description: "Sales department reported sick leaves.",
+    description: "Finance department reported sick leaves.",
     time: "30 min ago",
     type: "info"
   },
@@ -146,13 +146,13 @@ export const QuickLinksWidget = ({ role }) => {
 const activities = [
   {
     id: 1,
-    title: "Rahul Sharma joined Engineering",
+    title: "Sarthak Jaggi joined AI",
     time: "10 min ago",
     type: "join"
   },
   {
     id: 2,
-    title: "Leave approved for Neha Kapoor",
+    title: "Leave approved for Pranay Rohilla",
     time: "35 min ago",
     type: "leave"
   },

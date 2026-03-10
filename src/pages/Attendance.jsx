@@ -221,21 +221,6 @@ export default function Attendance() {
   const prevMonth = () => { setPage(1); if (month === 0) { setYear(y=>y-1); setMonth(11); } else setMonth(m=>m-1); };
   const nextMonth = () => { setPage(1); if (month === 11) { setYear(y=>y+1); setMonth(0); } else setMonth(m=>m+1); };
 
-  // ── Summary helpers (re-tally with overrides applied) ──
-  const getRowSummary = (row) => {
-    const s = { ...row.summary };
-    const merged = { ...row.attendance };
-    Object.entries(overrides).forEach(([k, v]) => {
-      if (k.startsWith(row.employeeId + "_")) {
-        merged[k.replace(row.employeeId + "_", "")] = v;
-      }
-    });
-    s.totalPresentDays = Object.values(merged).filter(v => v === "PRESENT").length;
-    s.totalAbsence     = Object.values(merged).filter(v => v === "ABSENT").length;
-    s.totalWFH         = Object.values(merged).filter(v => v === "WFH").length;
-    s.totalSickDays    = Object.values(merged).filter(v => v?.startsWith("SICK")).length;
-    return s;
-  };
 
   // ── Unmarked = null AND not an off day ──
   const unmarkedCount = (row) => {
@@ -248,11 +233,46 @@ export default function Attendance() {
     return count;
   };
 
-  const attPct = (row) => {
-    const s = getRowSummary(row);
-    if (!s.totalWorkingDays) return 0;
-    return Math.round((s.totalPresentDays / s.totalWorkingDays) * 100);
-  };
+
+  // Put this ONCE above both functions
+const getMergedAttendance = (row) => {
+  const merged = { ...row.attendance };
+  Object.entries(overrides).forEach(([k, v]) => {
+    if (k.startsWith(row.employeeId + "_")) {
+      merged[k.replace(row.employeeId + "_", "")] = v;
+    }
+  });
+  return Object.values(merged);
+};
+
+// Then both functions become clean:
+const getRowSummary = (row) => {
+  const s    = { ...row.summary };
+  const vals = getMergedAttendance(row);
+
+  s.totalPresentDays = vals.filter(v => v === "PRESENT").length;
+  s.totalWFH         = vals.filter(v => v === "WFH").length;
+  s.totalLeaveDays   = vals.filter(v => v === "LEAVE_FULL").length
+                     + vals.filter(v => v === "LEAVE_FIRST_HALF" || v === "LEAVE_SECOND_HALF").length * 0.5;
+  s.totalSickDays    = vals.filter(v => v === "SICK_FULL").length
+                     + vals.filter(v => v === "SICK_FIRST_HALF" || v === "SICK_SECOND_HALF").length * 0.5;
+  s.totalAbsence     = s.totalLeaveDays + s.totalSickDays;
+  return s;
+};
+
+const attPct = (row) => {
+  const s    = getRowSummary(row);
+  const vals = getMergedAttendance(row);
+  if (!s.totalWorkingDays) return 0;
+
+  const effectiveDays =
+    vals.filter(v => v === "PRESENT").length
+  + vals.filter(v => v === "WFH").length
+  + vals.filter(v => v === "LEAVE_FIRST_HALF" || v === "SICK_FIRST_HALF" ||
+                     v === "LEAVE_SECOND_HALF" || v === "SICK_SECOND_HALF").length * 0.5;
+
+  return Math.round((effectiveDays / s.totalWorkingDays) * 100);
+};
 
   const retry = () => {
     setError(null); setLoading(true);
@@ -532,7 +552,6 @@ export default function Attendance() {
                               <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
                                 {[
                                   ["P",   summary.totalPresentDays, "#16a34a", "#dcfce7"],
-                                  ["A",   summary.totalAbsence,     "#dc2626", "#fee2e2"],
                                   ["L",   summary.totalLeaveDays,   "#d97706", "#fef3c7"],
                                   ["WFH", summary.totalWFH,         "#0369a1", "#e0f2fe"],
                                   ["S",   summary.totalSickDays,    "#db2777", "#fce7f3"],
@@ -577,7 +596,7 @@ export default function Attendance() {
               <table style={{ width:"100%", borderCollapse:"collapse", fontSize:13 }}>
                 <thead>
                   <tr style={{ background:"#f8fafc" }}>
-                    {["Employee","Team","Working Days","Present","Absent","Leave","WFH","Sick","Att %"].map(h => (
+                    {["Employee","Team","Working Days","Present","Leave","WFH","Sick","Att %"].map(h => (
                       <th key={h} style={{ padding:"10px 16px", textAlign:["Employee","Team"].includes(h)?"left":"center", color:"#64748b", fontWeight:600, fontSize:12, borderBottom:"1px solid #e2e8f0" }}>{h}</th>
                     ))}
                   </tr>
@@ -607,7 +626,6 @@ export default function Attendance() {
                             <td style={{ padding:"10px 16px" }}><span style={{ background:"#f1f5f9", padding:"2px 8px", borderRadius:12, fontSize:11, color:"#475569", fontWeight:600 }}>{row.team}</span></td>
                             <td style={{ textAlign:"center", padding:"10px 16px", fontWeight:600, color:"#374151" }}>{s.totalWorkingDays}</td>
                             <td style={{ textAlign:"center", padding:"10px 16px" }}><span style={{ color:"#16a34a", fontWeight:700 }}>{s.totalPresentDays}</span></td>
-                            <td style={{ textAlign:"center", padding:"10px 16px" }}><span style={{ color:s.totalAbsence>0?"#dc2626":"#94a3b8", fontWeight:700 }}>{s.totalAbsence}</span></td>
                             <td style={{ textAlign:"center", padding:"10px 16px" }}><span style={{ color:s.totalLeaveDays>0?"#d97706":"#94a3b8", fontWeight:700 }}>{s.totalLeaveDays}</span></td>
                             <td style={{ textAlign:"center", padding:"10px 16px" }}><span style={{ color:s.totalWFH>0?"#0369a1":"#94a3b8", fontWeight:700 }}>{s.totalWFH}</span></td>
                             <td style={{ textAlign:"center", padding:"10px 16px" }}><span style={{ color:s.totalSickDays>0?"#db2777":"#94a3b8", fontWeight:700 }}>{s.totalSickDays}</span></td>

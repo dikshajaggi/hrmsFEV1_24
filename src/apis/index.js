@@ -38,6 +38,18 @@ export const fetchManagerData = () => {
   return api.get("/org/manager-data");
 }
 
+
+//--------------------------EMPLOYEE APIS--------------------------------------------------
+
+export const getEmployees = () => {
+  return api.get("/employees");
+};
+
+//--------------------------DASHBOARD APIS--------------------------------------------------
+export const getDashboard = () => {
+  return api.get("/dashboard");
+};
+
 //--------------------------ATTENDANCE APIS--------------------------------------------------
 
 export const getAttendanceSheet = (month, page, limit) => {

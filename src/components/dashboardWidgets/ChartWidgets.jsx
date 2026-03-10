@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   BarChart,
   Bar,
@@ -11,16 +12,17 @@ import {
   PieChart,
   Cell
 } from "recharts";
+import { MainContext } from "../../context/MainContext";
 
 const casualData = [
-  { month: "Jan", Engineering: 12, HR: 6, Sales: 10 },
-  { month: "Feb", Engineering: 8, HR: 7, Sales: 9 },
-  { month: "Mar", Engineering: 15, HR: 5, Sales: 12 }
+  { month: "Jan", AI: 12, HR: 6, FINANCE: 10 },
+  { month: "Feb", AI: 8, HR: 7, FINANCE: 9 },
+  { month: "Mar", AI: 15, HR: 5, FINANCE: 12 }
 ];
 
 export const CLTrendsWidget = () => {
   return (
-    <div className="w-full h-[280px] bg-white rounded-2xl p-4 shadow">
+    <div className="w-full h-70 bg-white rounded-2xl p-4 shadow">
       <h2 className="text-sm font-semibold mb-3 text-text-primary">
         Casual Leave Trends (Last 3 Months)
       </h2>
@@ -44,9 +46,9 @@ export const CLTrendsWidget = () => {
                 wrapperStyle={{ fontSize: "12px", paddingBottom: "10px" }}
                 iconSize={10}
             />
-            <Bar dataKey="Engineering" fill="#6366F1" radius={[8, 8, 0, 0]} />
+            <Bar dataKey="AI" fill="#6366F1" radius={[8, 8, 0, 0]} />
             <Bar dataKey="HR" fill="#22C55E" radius={[8, 8, 0, 0]} />
-            <Bar dataKey="Sales" fill="#F59E0B" radius={[8, 8, 0, 0]} />
+            <Bar dataKey="FINANCE" fill="#F59E0B" radius={[8, 8, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -56,9 +58,9 @@ export const CLTrendsWidget = () => {
 // sick leave trends--------------------
 
 const sickData = [
-  { month: "Jan", Engineering: 4, HR: 2, Sales: 3 },
-  { month: "Feb", Engineering: 5, HR: 1, Sales: 4 },
-  { month: "Mar", Engineering: 3, HR: 2, Sales: 5 }
+  { month: "Jan", AI: 4, HR: 2, FINANCE: 3 },
+  { month: "Feb", AI: 5, HR: 1, FINANCE: 4 },
+  { month: "Mar", AI: 3, HR: 2, FINANCE: 5 }
 ];
 
 export const SLTrendsWidget = () => {
@@ -87,9 +89,9 @@ export const SLTrendsWidget = () => {
                 wrapperStyle={{ fontSize: "12px", paddingBottom: "10px" }}
                 iconSize={10}
             />
-            <Bar dataKey="Engineering" fill="#6366F1" radius={[8, 8, 0, 0]} />
+            <Bar dataKey="AI" fill="#6366F1" radius={[8, 8, 0, 0]} />
             <Bar dataKey="HR" fill="#22C55E" radius={[8, 8, 0, 0]} />
-            <Bar dataKey="Sales" fill="#F59E0B" radius={[8, 8, 0, 0]} />
+            <Bar dataKey="FINANCE" fill="#F59E0B" radius={[8, 8, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -97,20 +99,30 @@ export const SLTrendsWidget = () => {
 }
 
 const data = [
-  { name: "Engineering", value: 45 },
-  { name: "Sales", value: 30 },
+  { name: "AI", value: 45 },
+  { name: "FINANCE", value: 30 },
   { name: "HR", value: 12 },
   { name: "Support", value: 18 }
 ];
 
 const COLORS = [
-  "#4F46E5", // Engineering
-  "#F59E0B", // Sales
+  "#4F46E5", // AI
+  "#F59E0B", // FINANCE
   "#10B981", // HR
   "#6366F1"  // Support
 ];
 
 export const DeptDistributionWidget = () => {
+
+  const { dashboardData } = useContext(MainContext);
+
+  if (!dashboardData) return null;
+
+  // Convert API teamSummary → chart data
+  const data = dashboardData.teamSummary.map(team => ({
+    name: team.team,
+    value: team.totalEmployees
+  }));
 
   const totalEmployees = data.reduce((sum, d) => sum + d.value, 0);
 
@@ -137,9 +149,11 @@ export const DeptDistributionWidget = () => {
                 dataKey="value"
                 stroke="none"
               >
+
                 {data.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index]} />
+                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
                 ))}
+
               </Pie>
 
               <Tooltip />
@@ -174,7 +188,7 @@ export const DeptDistributionWidget = () => {
 
               <div
                 className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: COLORS[index] }}
+                style={{ backgroundColor: COLORS[index % COLORS.length] }}
               />
 
               <span>{dept.name}</span>
@@ -188,7 +202,8 @@ export const DeptDistributionWidget = () => {
           ))}
 
         </div>
-        </div>
+
+      </div>
 
     </div>
   );
