@@ -26,7 +26,7 @@ export default function Dropdown({ label, options, onChange }) {
 
   return (
     <div ref={ref} className="relative w-full">
-
+      <p className="text-xs text-gray-500 font-medium capitalize mb-1">{label}</p>
       <button
         onClick={() => setOpen(!open)}
         className="
@@ -41,7 +41,7 @@ export default function Dropdown({ label, options, onChange }) {
         transition
         "
       >
-        <span className="text-gray-700">{value}</span>
+        <span className="text-gray-700 text-sm">{value}</span>
         <ChevronDown size={14} className="text-gray-500" />
       </button>
 

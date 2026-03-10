@@ -35,9 +35,35 @@ export const rejectUser = (data) => {
 
 
 export const fetchManagerData = () => {
-    return api.get("/org/manager-data");
+  return api.get("/org/manager-data");
 }
 
+//--------------------------ATTENDANCE APIS--------------------------------------------------
+
+export const getAttendanceSheet = (month, page, limit) => {
+  return api.get("/attendance/sheet", {
+    params: {
+      month,
+      page,
+      limit
+    }
+  })
+}
+
+export const markAttendance = (employeeId, date, status) => {
+  return api.post("/attendance/mark", {
+    employeeId,
+    date,
+    status
+  });
+};
+
+export const markBulkAttendance = (today, employeeIds, status = "PRESENT") => { 
+  return api.post("/attendance/bulk", {
+  date: today,
+  status,
+  employeeIds
+})};
 //--------------------------ORGANISATION APIS--------------------------------------------------
 
 

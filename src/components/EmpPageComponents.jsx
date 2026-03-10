@@ -186,11 +186,11 @@ const columns = [
     },
   },
 
-  {
-    id: "actions",
-    header: "",
-    cell: () => <EmployeeActions />,
-  },
+  // {
+  //   id: "actions",
+  //   header: "",
+  //   cell: () => <EmployeeActions />,
+  // },
 ];
 
 
