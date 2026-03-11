@@ -106,34 +106,94 @@ const data = [
 ];
 
 const COLORS = [
-  "#4F46E5", // AI
-  "#F59E0B", // FINANCE
-  "#10B981", // HR
-  "#6366F1"  // Support
+  "#4F46E5",
+  "#F59E0B",
+  "#10B981",
+  "#6366F1"
 ];
 
-export const DeptDistributionWidget = () => {
+export const DeptLeaveDistributionWidget = () => {
 
   const { dashboardData } = useContext(MainContext);
 
   if (!dashboardData) return null;
 
-  // Convert API teamSummary → chart data
-  const data = dashboardData.teamSummary.map(team => ({
-    name: team.team,
-    value: team.totalEmployees
-  }));
+  const role = dashboardData.role;
 
-  const totalEmployees = data.reduce((sum, d) => sum + d.value, 0);
+  let data = [];
+  let title = "";
+  let centerValue = 0;
+  let centerLabel = "";
+
+  // ==============================
+  // ADMIN / HR → DEPARTMENT DATA
+  // ==============================
+
+  if (role === "ADMIN" || role === "HR") {
+
+    title = "Department Distribution";
+    centerLabel = "Employees";
+
+    data = dashboardData.teamSummary.map(team => ({
+      name: team.team,
+      value: team.totalEmployees
+    }));
+
+    centerValue = data.reduce((sum, d) => sum + d.value, 0);
+  }
+
+  // ==============================
+  // EMPLOYEE → LEAVE USAGE
+  // ==============================
+
+  else if (role === "EMPLOYEE") {
+
+    title = "Leave Usage";
+
+    const {
+      usedCL,
+      remainingCL,
+      usedSL,
+      remainingSL
+    } = dashboardData.leaveSummary;
+
+    data = [
+      { name: "CL Used", value: usedCL },
+      { name: "CL Remaining", value: remainingCL },
+      { name: "SL Used", value: usedSL },
+      { name: "SL Remaining", value: remainingSL }
+    ];
+
+    centerValue = remainingCL;
+    centerLabel = "Leaves Remaining";
+  }
+
+  // ==============================
+  // MANAGER (Optional Future Use)
+  // ==============================
+
+  else if (role === "MANAGER") {
+
+    title = "Team Distribution";
+    centerLabel = "Employees";
+
+    data = dashboardData.teamSummary?.map(team => ({
+      name: team.team,
+      value: team.totalEmployees
+    })) || [];
+
+    centerValue = data.reduce((sum, d) => sum + d.value, 0);
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 h-full">
 
+      {/* Title */}
       <h3 className="text-sm font-semibold text-text-primary mb-4">
-        Department Distribution
+        {title}
       </h3>
 
-      <div className="flex items-center justify-between flex-col">
+      <div className="flex flex-col items-center">
 
         {/* Donut Chart */}
         <div className="w-40 h-40 relative">
@@ -151,7 +211,10 @@ export const DeptDistributionWidget = () => {
               >
 
                 {data.map((entry, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                  <Cell
+                    key={index}
+                    fill={COLORS[index % COLORS.length]}
+                  />
                 ))}
 
               </Pie>
@@ -165,11 +228,11 @@ export const DeptDistributionWidget = () => {
           <div className="absolute inset-0 flex flex-col items-center justify-center">
 
             <span className="text-lg font-semibold text-gray-800">
-              {totalEmployees}
+              {centerValue}
             </span>
 
             <span className="text-xs text-gray-500">
-              Employees
+              {centerLabel}
             </span>
 
           </div>
@@ -179,22 +242,24 @@ export const DeptDistributionWidget = () => {
         {/* Legend */}
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-8">
 
-          {data.map((dept, index) => (
+          {data.map((item, index) => (
 
             <div
-              key={dept.name}
+              key={item.name}
               className="flex items-center gap-1.5 text-xs text-gray-600"
             >
 
               <div
                 className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                style={{
+                  backgroundColor: COLORS[index % COLORS.length]
+                }}
               />
 
-              <span>{dept.name}</span>
+              <span>{item.name}</span>
 
               <span className="text-gray-700 font-medium">
-                {dept.value}
+                {item.value}
               </span>
 
             </div>

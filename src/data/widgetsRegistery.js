@@ -6,6 +6,11 @@ export const widgetsRegistery = {
       .then(m => ({ default: m.TodayStatsWidget }))
   ),
 
+   attendanceStats: lazy(() =>
+    import("../components/dashboardWidgets/AttendanceWidgets")
+      .then(m => ({ default: m.AttendanceWidget }))
+  ),
+
   monthlyCLStats: lazy(() =>
     import("../components/dashboardWidgets/ChartWidgets")
       .then(m => ({ default: m.CLTrendsWidget }))
@@ -16,9 +21,14 @@ export const widgetsRegistery = {
       .then(m => ({ default: m.SLTrendsWidget }))
   ),
 
-  DeptDistribution: lazy(() =>
+  DeptLeaveDistribution: lazy(() =>
     import("../components/dashboardWidgets/ChartWidgets")
-      .then(m => ({ default: m.DeptDistributionWidget }))
+      .then(m => ({ default: m.DeptLeaveDistributionWidget }))
+  ),
+
+  UpcomingHolidays: lazy(() =>
+    import("../components/dashboardWidgets/MiscWidgets")
+      .then(m => ({ default: m.UpcomingHolidaysWidget }))
   ),
 
   HRActTimeline: lazy(() =>

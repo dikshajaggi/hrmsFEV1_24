@@ -1,4 +1,4 @@
-import { Users, UserCheck, UserMinus, Stethoscope, UserPlus, FileText, CalendarCheck, ClipboardList } from "lucide-react";
+import { Users, UserCheck, UserMinus, Stethoscope, UserPlus, FileText, CalendarCheck, ClipboardList, CheckCircle, Home, CalendarMinus, HeartPulse } from "lucide-react";
 
 export const todayStats = (dashboardData) => {
 
@@ -29,6 +29,29 @@ export const todayStats = (dashboardData) => {
     }
   ];
 };
+
+export const attendanceStats = (data) => [
+  {
+    label: "Total Days",
+    value: data.attendanceSummary.totalWorkingDays,
+    icon: CheckCircle
+  },
+  {
+    label: "Present Days",
+    value: data.attendanceSummary.present,
+    icon: CheckCircle
+  },
+  {
+    label: "Leave Days",
+    value: data.attendanceSummary.leave,
+    icon: CalendarMinus
+  },
+  {
+    label: "Sick Leaves",
+    value: data.attendanceSummary.sickLeave,
+    icon: HeartPulse
+  }
+];
 
 export const links = [
   {

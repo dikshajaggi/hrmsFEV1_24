@@ -84,7 +84,7 @@ const [managers, setManagers] = useState([
 //   };
 
   useEffect(() => {
-    // loadUsers();
+    loadUsers()
     // fetchTeams();
     // fetchDesignations();
     // fetchManagers();

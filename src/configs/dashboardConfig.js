@@ -7,10 +7,21 @@ export const dashboardConfig = [
     section: "main",
     row: "stats",
     order: 1,
-    roles: ["hr", "manager"],
+    roles: ["hr"],
     scope: {
       hr: "org",
       manager: "team"
+    },
+  },
+
+  {
+    widget: "attendanceStats",
+    section: "main",
+    row: "stats",
+    order: 1,
+    roles: ["employee", "manager"],
+    scope: {
+      employee: "individual"
     },
   },
 
@@ -39,13 +50,24 @@ export const dashboardConfig = [
   },
 
   {
-    widget: "DeptDistribution",
+    widget: "DeptLeaveDistribution",
     section: "main",
     row: "insights",
     order: 1,
-    roles: ["hr"],
+    roles: ["hr", "employee"],
     scope: {
       hr: "org"
+    },
+  },
+
+  {
+    widget: "UpcomingHolidays",
+    section: "main",
+    row: "insights",
+    order: 2,
+    roles: ["manager", "employee"],
+    scope: {
+      employee: "individual"
     },
   },
 
@@ -114,3 +136,4 @@ export const dashboardConfig = [
   },
 
 ];
+

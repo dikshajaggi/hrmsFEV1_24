@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { todayStats } from '../../data/dashboardData'
+import { attendanceStats, todayStats } from '../../data/dashboardData'
 import MetricCard from '../MetricCard'
 import { CalendarClock } from "lucide-react";
 import { MainContext } from '../../context/MainContext';
@@ -36,6 +36,45 @@ export const TodayStatsWidget = () => {
       })}
 
     </div>
+  );
+};
+
+
+export const AttendanceWidget = () => {
+
+  const { dashboardData } = useContext(MainContext);
+
+  const stats = attendanceStats(dashboardData);
+
+  return (
+      <div className='flex flex-col mt-4'>
+        {dashboardData?.attendanceSummary && <span className='text-text-primary font-semibold text-xl mb-1'>{dashboardData.attendanceSummary.month} Attendance Stats</span>}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
+
+          {stats.map((stat, index) => {
+
+            const Icon = stat.icon;
+
+            return (
+              <div key={index} className="bg-white shadow rounded-xl p-4">
+
+                <div className="flex items-center gap-3">
+
+                  <Icon size={22} className="text-brand"/>
+
+                  <div>
+                    <p className="text-3xl font-semibold">{stat.value}</p>
+                    <p className="text-sm text-gray-500">{stat.label}</p>
+                  </div>
+
+                </div>
+
+              </div>
+            );
+          })}
+
+        </div>
+      </div>
   );
 };
 

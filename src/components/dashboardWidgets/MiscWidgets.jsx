@@ -1,6 +1,9 @@
-import { Bell, UserPlus, CheckCircle2, FileText, CalendarCheck } from "lucide-react";
+import { Bell, UserPlus, CheckCircle2, FileText, CalendarCheck, CalendarDays } from "lucide-react";
 import { links } from "../../data/dashboardData";
 import { Link } from "react-router-dom";
+import dayjs from "../../utils/dayjs"
+import { useContext } from "react";
+import { MainContext } from "../../context/MainContext";
 
 const notifications = [
   {
@@ -229,6 +232,89 @@ export const HRActTimelineWidget = () => {
               </div>
 
             </div>
+          );
+        })}
+
+      </div>
+
+    </div>
+  );
+};
+
+
+export const UpcomingHolidaysWidget = () => {
+
+  const { dashboardData } = useContext(MainContext);
+
+  const holidays = dashboardData?.upcomingHolidays || [];
+
+  if (!holidays.length) {
+    return (
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+        <h3 className="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
+          <CalendarDays size={16} />
+          Upcoming Holidays
+        </h3>
+
+        <p className="text-xs text-gray-500">No upcoming holidays</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 max-h-74 overflow-y-auto">
+
+      {/* Header */}
+      <h3 className="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
+        <CalendarDays size={16} />
+        Upcoming Holidays
+      </h3>
+
+      {/* Holiday List */}
+      <div className="flex flex-col gap-3">
+
+        {holidays.map((holiday) => {
+
+          const date = dayjs(holiday.date);
+          const day = date.format("DD");
+          const month = date.format("MMM");
+          const weekday = date.format("dddd");
+
+          return (
+
+            <div
+              key={holiday.id}
+              className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition"
+            >
+
+              {/* Left */}
+              <div className="flex flex-col">
+
+                <span className="text-sm font-medium text-gray-700">
+                  {holiday.name}
+                </span>
+
+                <span className="text-xs text-gray-500">
+                  {weekday}
+                </span>
+
+              </div>
+
+              {/* Date Badge */}
+              <div className="flex flex-col items-center justify-center bg-gray-100 px-2 py-1 rounded-md min-w-[40px]">
+
+                <span className="text-xs font-semibold text-gray-800">
+                  {day}
+                </span>
+
+                <span className="text-[10px] text-gray-500">
+                  {month}
+                </span>
+
+              </div>
+
+            </div>
+
           );
         })}
 
