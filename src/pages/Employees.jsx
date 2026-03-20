@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { EmployeeTable } from "../components/EmpPageComponents";
 
 export default function Employees() {
+  const navigate = useNavigate()
+  
   return (
     <div className="flex flex-col h-full p-6 gap-6">
 
@@ -15,6 +18,10 @@ export default function Employees() {
         {/* <button className="bg-brand text-white px-4 py-2 rounded-lg">
           Add Employee
         </button> */}
+         <button className="bg-brand text-white px-4 py-2 rounded-lg cursor-pointer"
+         onClick={() => navigate("/employees/bulk-upload")}>
+          Bulk Upload
+        </button>
       </div>
 
       <div className="flex-1">

@@ -14,6 +14,8 @@ import FirstLogin from "./pages/FirstLogin";
 
 import BaseLayout from "./layouts/BaseLayout";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import EmpBulkUpload from "./pages/EmpBulkUpload";
+import EmployeeEditPage from "./pages/EmployeeEdit";
 
 const AppRoutes = () => {
   return (
@@ -37,6 +39,8 @@ const AppRoutes = () => {
             <Route path="/leave-status" element={<LeaveStatus />} />
             <Route path="/approvals" element={<Approvals />} />
             <Route path="/policies" element={<Policies />} />
+            <Route path="/employees/bulk-upload" element={<EmpBulkUpload />} />
+             <Route path="/employees/edit/:id" element={<EmployeeEditPage />} />
           </Route>
         </Route>
 

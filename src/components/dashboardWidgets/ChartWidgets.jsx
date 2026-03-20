@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import {
   BarChart,
   Bar,
@@ -12,7 +11,7 @@ import {
   PieChart,
   Cell
 } from "recharts";
-import { MainContext } from "../../context/MainContext";
+import { useMainStore } from "../../store/useMainStore";
 
 const casualData = [
   { month: "Jan", AI: 12, HR: 6, FINANCE: 10 },
@@ -114,7 +113,7 @@ const COLORS = [
 
 export const DeptLeaveDistributionWidget = () => {
 
-  const { dashboardData } = useContext(MainContext);
+  const dashboardData = useMainStore((s) => s.dashboardData);
 
   if (!dashboardData) return null;
 

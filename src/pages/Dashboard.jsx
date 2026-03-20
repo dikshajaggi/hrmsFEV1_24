@@ -1,9 +1,13 @@
-import { useContext } from "react";
+import { useEffect } from "react";
 import { RenderWidgets } from "../utils/RenderWidgets";
-import { MainContext } from "../context/MainContext";
+import { initSocket } from "../utils/socket";
+import { useMainStore } from "../store/useMainStore";
 
 const Dashboard = () => {
-  const {userDetails} = useContext(MainContext)
+  const userDetails =  useMainStore((s) => s.userDetails);
+  const loadDashboard =  useMainStore((s) => s.loadDashboard);
+
+  
   const role = userDetails ? userDetails.roles[0].toLowerCase() : "hr"
   // const [runTour, setRunTour] = useState(true);
 
@@ -29,6 +33,22 @@ const Dashboard = () => {
   //       content: "Quick actions allow you to perform frequent tasks quickly."
   //     }
   //   ];
+
+  useEffect(() => {
+  const socket = initSocket(userDetails.id);
+
+  socket.on("notification", (data) => {
+    console.log("NEW NOTIFICATION", data);
+  });
+}, []);
+
+
+
+useEffect(() => {
+  if (userDetails) {
+    loadDashboard();
+  }
+}, [userDetails]);
 
   return (
     <>

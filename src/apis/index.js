@@ -19,8 +19,8 @@ export const logoutUser = () => {
 };
 
 //------------------------------HR APIS------------------------------------------------------
-export const fetchPendingUsers = () => {
-  return api.get("/hr/pending-users");
+export const fetchPendingUsers = async () => {
+  return await api.get("/hr/pending-users");
 };
 
 export const approveUser = (data) => {
@@ -29,6 +29,24 @@ export const approveUser = (data) => {
 
 export const rejectUser = (data) => {
   return api.post("/hr/reject-user", data);
+};
+
+//------------------------------HR APIS------------------------------------------------------
+
+export const bulkUploadEmployeesAPI = async (file, { adminId, dryRun }) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  if (adminId) {
+    formData.append("adminId", adminId); // optional
+  }
+
+  const res = await api.post(
+    `/employees/bulk-upload?dryRun=${dryRun}`,
+    formData
+  );
+
+  return res.data.data;
 };
 
 //--------------------------MANAGER APIS--------------------------------------------------

@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { MainContext } from "../context/MainContext";
+import { useMainStore } from "../store/useMainStore";
 
 const ProtectedRoute = () => {
 
-  const { userDetails } = useContext(MainContext);
+  const userDetails =  useMainStore((s) => s.userDetails); 
   const token = sessionStorage.getItem("accessToken");
 
   if (!token || !userDetails) {

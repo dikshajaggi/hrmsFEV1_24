@@ -7,11 +7,10 @@ import {
 import crimsonenergy from "../assets/crimsonenergy.svg";
 import Tooltip from "../components/ui/Tooltip";
 import { sidebarConfig } from "../configs/sidebarConfig";
-import { useContext } from "react";
-import { MainContext } from "../context/MainContext";
+import { useMainStore } from "../store/useMainStore";
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
-  const {userDetails} = useContext(MainContext)
+  const userDetails = useMainStore((s) => s.userDetails);
   const role = userDetails.roles[0].toLowerCase()
   return (
     <aside

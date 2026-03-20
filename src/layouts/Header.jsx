@@ -1,12 +1,12 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { MainContext } from "../context/MainContext";
-// import { ThemeContext } from "../../context/ThemeContext";
+import { useMainStore } from "../store/useMainStore";
 
 const Header = () => {
-//   const { theme, toggleTheme } = useContext(ThemeContext);
-  const {userDetails, logout} = useContext(MainContext)
+ const userDetails = useMainStore((s) => s.userDetails);
+ const logout = useMainStore((s) => s.logout);
+
   const theme = "light"
   const [time, setTime] = useState(new Date());
   const [openProfile, setOpenProfile] = useState(false);

@@ -2,8 +2,7 @@ import { Bell, UserPlus, CheckCircle2, FileText, CalendarCheck, CalendarDays } f
 import { links } from "../../data/dashboardData";
 import { Link } from "react-router-dom";
 import dayjs from "../../utils/dayjs"
-import { useContext } from "react";
-import { MainContext } from "../../context/MainContext";
+import { useMainStore } from "../../store/useMainStore";
 
 const notifications = [
   {
@@ -244,7 +243,8 @@ export const HRActTimelineWidget = () => {
 
 export const UpcomingHolidaysWidget = () => {
 
-  const { dashboardData } = useContext(MainContext);
+    const dashboardData = useMainStore((s) => s.dashboardData);
+  
 
   const holidays = dashboardData?.upcomingHolidays || [];
 

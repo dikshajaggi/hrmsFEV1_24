@@ -1,14 +1,14 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { attendanceStats, todayStats } from '../../data/dashboardData'
 import MetricCard from '../MetricCard'
 import { CalendarClock } from "lucide-react";
-import { MainContext } from '../../context/MainContext';
+import { useMainStore } from '../../store/useMainStore';
 
 export const TodayStatsWidget = () => {
 
-  const { dashboardData } = useContext(MainContext);
-
-  const stats = todayStats(dashboardData);
+  const dashboardData = useMainStore((s) => s.dashboardData);
+  console.log(dashboardData, "data")
+  const stats = dashboardData ? todayStats(dashboardData) : [];
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
@@ -42,7 +42,7 @@ export const TodayStatsWidget = () => {
 
 export const AttendanceWidget = () => {
 
-  const { dashboardData } = useContext(MainContext);
+  const dashboardData = useMainStore((s) => s.dashboardData);
 
   const stats = attendanceStats(dashboardData);
 
