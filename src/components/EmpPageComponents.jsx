@@ -16,6 +16,14 @@ import {
 import { getEmployees } from "../apis";
 import { DeleteModal, EditEmployeeModal, EmployeeDrawer } from "./EmployeeActions";
 
+const colors = [
+  "bg-red-100 text-red-600",
+  "bg-blue-100 text-blue-600",
+  "bg-green-100 text-green-600",
+  "bg-purple-100 text-purple-600",
+];
+
+
 const columns = (handlers) => [
   {
     accessorKey: "name",
@@ -28,10 +36,13 @@ const columns = (handlers) => [
         .map((n) => n[0])
         .join("");
 
+      const color = colors[emp.id % colors.length];
+      console.log(color, "emp avatar color")
+
       return (
         <div className="flex items-center gap-3">
 
-          <div className="w-9 h-9 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-semibold">
+          <div className={`w-9 h-9 rounded-full ${color} flex items-center justify-center text-xs font-semibold`}>
             {initials}
           </div>
 
@@ -63,12 +74,12 @@ const columns = (handlers) => [
 
       const color =
         status === "ACTIVE"
-          ? "bg-green-100 text-green-700"
+          ? "bg-green-50 text-green-700 border border-green-100"
           : "bg-gray-100 text-gray-600";
 
       return (
         <span
-          className={`px-2 py-1 text-xs font-medium rounded-full ${color}`}
+          className={`px-2.5 py-1 text-xs font-medium rounded-full ${color}`}
         >
           {status}
         </span>
@@ -125,6 +136,7 @@ export const EmployeeTable = () => {
       setLoading(false);
     }
   };
+  
 
 const table = useReactTable({
   data,
@@ -153,21 +165,32 @@ const table = useReactTable({
     return <TableSkeleton />;
   }
 
+  if (!data.length) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full text-center">
+        <p className="text-gray-500">No employees found</p>
+        <button className="mt-3 px-4 py-2 bg-brand text-white rounded-lg">
+          Add Employee
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col h-full bg-white rounded-xl border border-gray-200 shadow-sm">
+    <div className="flex flex-col h-full bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
 
       {/* TABLE */}
       <div className="flex-1 overflow-auto">
         <table className="w-full text-sm">
 
-          <thead className="bg-gray-50 sticky top-0 z-10">
+          <thead className="bg-gray-50/70 backdrop-blur sticky top-0 z-10">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
 
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="text-left px-5 py-3 font-medium text-gray-600 cursor-pointer select-none"
+                    className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide"
                     onClick={header.column.getToggleSortingHandler()}
                   >
                     <div className="flex items-center gap-1">
@@ -205,11 +228,11 @@ const table = useReactTable({
                   setSelectedEmployee(row.original);
                   setDrawerOpen(true);
                 }}
-                className="border-t border-gray-100 hover:bg-gray-50 transition cursor-pointer"
+                className="group border-b border-gray-100 hover:bg-gray-50/70 transition"
               >
 
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-5 py-4">
+                  <td className="px-5 py-4  transition" key={cell.id}>
                     {flexRender(
                       cell.column.columnDef.cell,
                       cell.getContext()

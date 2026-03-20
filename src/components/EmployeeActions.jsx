@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { employeeEditConfig } from "../configs/employeeAllDetails";
 import { FormField } from "./ui/FormField";
 import { NormalButton } from "./ui/Buttons";
+import Dropdown from "./ui/Dropdown";
 
  const departmentOptions = [
   { label: "Engineering", value: "Engineering" },
@@ -140,28 +141,28 @@ export function EditEmployeeModal({ open, onClose, employee }) {
         <div className="grid grid-cols-2 gap-4">
 
           {employeeEditForm.quick.map((field) => (
-            <FormField key={field.key} label={field.label}>
-
-              {field.type === "select" ? (
-                <select
-                  defaultValue={employee[field.key]}
-                  className="w-full border px-3 py-2 rounded-lg bg-white focus:ring-2 focus:ring-brand/40"
-                >
-                  {(field.key === "team" ? departmentOptions : roleOptions).map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
+              field.type === "select" ? (
+                <Dropdown options={field.key === "team" ? departmentOptions : roleOptions} label={field.label} />
               ) : (
+              <FormField key={field.key} label={field.label}>
                 <input
                   type={field.type}
                   defaultValue={employee[field.key]}
-                  className="w-full border px-3 py-2 rounded-lg focus:ring-2 focus:ring-brand/40"
+                  className="
+                    w-full 
+                    px-3 py-2 
+                    rounded-lg 
+                    border border-gray-200 
+                    bg-white 
+                    text-sm
+                    focus:outline-none 
+                    focus:ring-2 focus:ring-brand/30 
+                    focus:border-brand
+                    transition
+                    "
                 />
-              )}
-
-            </FormField>
+                </FormField>
+              )
           ))}
 
         </div>
